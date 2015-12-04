@@ -12,13 +12,17 @@ namespace Snake_beadando
         Snake ellenseg;
         Map map;
         string jatekosUzenet;
-        //todo: VM statik lekérés ez alapján a kódok átírása
-
+        string ellensegUzenet;
+        int cw;
+        int ch;
+        
         public ViewModel(int cw, int ch)
         {
             Map = new Map(cw, ch);
-            Ellenseg = new Snake(0, 0, 10, 10, Direction.fel, Player.ellenseg);
-            JatekosUzenet = "Kezdéshez nyomd meg: 'F'";
+            JatekosUzenet = "Kezdéshez nyomd meg: 'F'-t";
+            EllensegUzenet = "Kezdéshez nyomd meg: 'Numpad 0'-t";
+            this.ch = ch;
+            this.cw = cw;
         }
 
         public void GameOver(Snake s, Player p)
@@ -26,17 +30,25 @@ namespace Snake_beadando
             if (p == Player.ellenseg)
             {
                 Ellenseg = null;
+                EllensegUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'Numpad 0'-t";
+                JatekosUzenet = "Nyertél!\nKezdéshez nyomd meg: 'F'-t";
             }
             else if (p == Player.jatekos)
             {
                 Jatekos = null;
-                JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'F'";
+                JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'F'-t";
+                EllensegUzenet = "Nyertél!\nKezdéshez nyomd meg: 'Numpad 0'-t";
             }
         }
 
         public void JatekosInit()
         {
             Jatekos = new Snake(40, 100, 10, 10, Direction.le, Player.jatekos);
+        }
+
+        public void EllensegInit()
+        {
+            Ellenseg = new Snake(cw-50, ch-250, 10, 10, Direction.fel, Player.ellenseg);
         }
 
         public Snake Jatekos
@@ -91,6 +103,20 @@ namespace Snake_beadando
             set
             {
                 jatekosUzenet = value;
+                OPC();
+            }
+        }
+
+        public string EllensegUzenet
+        {
+            get
+            {
+                return ellensegUzenet;
+            }
+
+            set
+            {
+                ellensegUzenet = value;
                 OPC();
             }
         }

@@ -23,6 +23,8 @@ namespace Snake_beadando
     {
         ViewModel vm;
         DispatcherTimer dtJatekos;
+        DispatcherTimer dtEllenseg;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,8 +34,7 @@ namespace Snake_beadando
         {
             vm = new ViewModel((int)this.ActualWidth, (int)this.ActualHeight);
             
-            this.DataContext = vm;
-            
+            this.DataContext = vm;            
         }
 
         private void Dt_Tick(object sender, EventArgs e)
@@ -55,6 +56,28 @@ namespace Snake_beadando
                 dtJatekos.Interval = new TimeSpan(0, 0, 0, 0, 300);
                 dtJatekos.Tick += Dt_Tick;
                 dtJatekos.Start();
+            }
+        }
+
+        private void EllensegStart()
+        {
+            if (dtEllenseg == null || !dtEllenseg.IsEnabled)
+            {
+                vm.EllensegInit();
+                vm.EllensegUzenet = "";
+
+                dtEllenseg = new DispatcherTimer();
+                dtEllenseg.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                dtEllenseg.Tick += DtEllenseg_Tick;
+                dtEllenseg.Start();
+            }
+        }
+
+        private void DtEllenseg_Tick(object sender, EventArgs e)
+        {
+            if (vm.Ellenseg.Move(dtEllenseg, vm.Ellenseg, vm.Jatekos, vm.Map))
+            {
+                vm.GameOver(vm.Ellenseg, Player.ellenseg);
             }
         }
 
@@ -80,6 +103,25 @@ namespace Snake_beadando
                 case Key.D:
                     if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.balra)
                         vm.Jatekos.Direct = Direction.jobbra;
+                    break;
+                case Key.NumPad0:
+                    EllensegStart();
+                    break;
+                case Key.Up:
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.le)
+                        vm.Ellenseg.Direct = Direction.fel;
+                    break;
+                case Key.Down:
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.fel)
+                        vm.Ellenseg.Direct = Direction.le;
+                    break;
+                case Key.Left:
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.jobbra)
+                        vm.Ellenseg.Direct = Direction.balra;
+                    break;
+                case Key.Right:
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.balra)
+                        vm.Ellenseg.Direct = Direction.jobbra;
                     break;
             }
         }

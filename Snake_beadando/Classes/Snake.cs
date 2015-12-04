@@ -106,10 +106,13 @@ namespace Snake_beadando
             }
 
             //ellenséggel való ütközés => game over => egyből return:
-            foreach (Rect r in ellenseg.Elemek)
+            if (ellenseg != null)
             {
-                if (Elemek[0].IntersectsWith(r))
-                    return true;
+                foreach (Rect r in ellenseg.Elemek)
+                {
+                    if (Elemek[0].IntersectsWith(r))
+                        return true;
+                }
             }
 
             //fallal való ütközés => game over => egyből return:

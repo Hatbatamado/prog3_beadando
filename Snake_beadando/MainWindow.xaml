@@ -19,6 +19,7 @@
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Label Content="{Binding JatekosUzenet}" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="{Binding EllensegUzenet}" Grid.Row="0" Grid.Column="2"/>
         <Image Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
             <Image.Resources>
                 <local:PlayerKonverter x:Key="PlayerKonv"/>
@@ -27,7 +28,7 @@
                 <DrawingImage>
                     <DrawingImage.Drawing>
                         <DrawingGroup>
-                            
+                            <GeometryDrawing Geometry="{Binding Ellenseg.Elemek, Converter={StaticResource PlayerKonv}}" Brush="Red" />
                             <GeometryDrawing Geometry="{Binding Jatekos.Elemek, Converter={StaticResource PlayerKonv}}" Brush="Aqua" />
                             <GeometryDrawing Geometry="{Binding Map.Palya}" Brush="Black" />
                         </DrawingGroup>
