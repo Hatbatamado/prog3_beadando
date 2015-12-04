@@ -27,15 +27,16 @@ namespace Snake_beadando
 
         public void GameOver(Snake s, Player p)
         {
+            Ellenseg = null;
+            Jatekos = null;
+
             if (p == Player.ellenseg)
             {
-                Ellenseg = null;
                 EllensegUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'Numpad 0'-t";
                 JatekosUzenet = "Nyertél!\nKezdéshez nyomd meg: 'F'-t";
             }
             else if (p == Player.jatekos)
             {
-                Jatekos = null;
                 JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'F'-t";
                 EllensegUzenet = "Nyertél!\nKezdéshez nyomd meg: 'Numpad 0'-t";
             }
@@ -48,7 +49,7 @@ namespace Snake_beadando
 
         public void EllensegInit()
         {
-            Ellenseg = new Snake(cw-50, ch-250, 10, 10, Direction.fel, Player.ellenseg);
+            Ellenseg = new Snake(cw-50, ch-250, 10, 10, Direction.le, Player.ellenseg);
         }
 
         public Snake Jatekos

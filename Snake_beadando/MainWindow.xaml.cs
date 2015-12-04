@@ -24,6 +24,8 @@ namespace Snake_beadando
         ViewModel vm;
         DispatcherTimer dtJatekos;
         DispatcherTimer dtEllenseg;
+        bool jatekosReady;
+        bool ellensegReady;
 
         public MainWindow()
         {
@@ -39,7 +41,7 @@ namespace Snake_beadando
 
         private void Dt_Tick(object sender, EventArgs e)
         {
-            if (vm.Jatekos.Move(dtJatekos, vm.Jatekos, vm.Ellenseg, vm.Map))
+            if (vm.Jatekos.Move(dtJatekos, dtEllenseg, vm.Jatekos, vm.Ellenseg, vm.Map))
             {
                 vm.GameOver(vm.Jatekos, Player.jatekos);
             }
@@ -47,35 +49,53 @@ namespace Snake_beadando
 
         private void JatekosStart()
         {
-            if (dtJatekos == null || !dtJatekos.IsEnabled)
-            {
+            if (!jatekosReady)
+                jatekosReady = true;
+
+            if (ellensegReady && (dtJatekos == null || !dtJatekos.IsEnabled))
+            {              
                 vm.JatekosInit();
-                vm.JatekosUzenet = "";
+                vm.JatekosUzenet = "";                
 
                 dtJatekos = new DispatcherTimer();
                 dtJatekos.Interval = new TimeSpan(0, 0, 0, 0, 300);
                 dtJatekos.Tick += Dt_Tick;
                 dtJatekos.Start();
+
+                if (dtEllenseg == null || !dtEllenseg.IsEnabled)
+                    EllensegStart();
+                jatekosReady = false;                
             }
+            else
+                vm.JatekosUzenet = "Várakozás a másik játékosra";
         }
 
         private void EllensegStart()
         {
-            if (dtEllenseg == null || !dtEllenseg.IsEnabled)
+            if (!ellensegReady)
+                ellensegReady = true;
+
+            if (jatekosReady && (dtEllenseg == null || !dtEllenseg.IsEnabled))
             {
                 vm.EllensegInit();
-                vm.EllensegUzenet = "";
+                vm.EllensegUzenet = "";                
 
                 dtEllenseg = new DispatcherTimer();
                 dtEllenseg.Interval = new TimeSpan(0, 0, 0, 0, 300);
                 dtEllenseg.Tick += DtEllenseg_Tick;
                 dtEllenseg.Start();
+
+                if (dtJatekos == null || !dtJatekos.IsEnabled)
+                    JatekosStart();
+                ellensegReady = false;                
             }
+            else
+                vm.EllensegUzenet= "Várakozás a másik játékosra";
         }
 
         private void DtEllenseg_Tick(object sender, EventArgs e)
         {
-            if (vm.Ellenseg.Move(dtEllenseg, vm.Ellenseg, vm.Jatekos, vm.Map))
+            if (vm.Ellenseg.Move(dtEllenseg, dtJatekos, vm.Ellenseg, vm.Jatekos, vm.Map))
             {
                 vm.GameOver(vm.Ellenseg, Player.ellenseg);
             }

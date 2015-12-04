@@ -60,16 +60,16 @@ namespace Snake_beadando
             }
         }
 
-        public bool Move(DispatcherTimer dt, Snake jatekos, Snake ellenseg, Map map)
+        public bool Move(DispatcherTimer dt1, DispatcherTimer dt2, Snake actual, Snake enemy, Map map)
         {
-            for (int i = elemek.Count - 1; i > 0; i--)
+            for (int i = actual.elemek.Count - 1; i > 0; i--)
             {
-                elemek[i] = elemek[i - 1];
+                actual.elemek[i] = actual.elemek[i - 1];
             }
 
-            Rect elem = Elemek[0];
+            Rect elem = actual.Elemek[0];
 
-            switch (direct)
+            switch (actual.Direct)
             {
                 case Direction.balra:
                     elem.X -= move;
@@ -85,32 +85,35 @@ namespace Snake_beadando
                     break;
             }
 
-            Elemek[0] = elem;
+            actual.Elemek[0] = elem;
             OPC("Elemek");
 
-            if (Utkozik(ellenseg, map))
+            if (Utkozik(actual, enemy, map))
             {
-                dt.Stop();
+                if (dt1 != null)
+                    dt1.Stop();
+                if (dt2 != null)
+                    dt2.Stop();
                 return true;
             }
             return false;
         }
 
-        private bool Utkozik(Snake ellenseg, Map map)
+        private bool Utkozik(Snake actual, Snake enemy, Map map)
         {
             //önmagával való ütközés => game over => egyből return:
-            for (int i = 1; i < Elemek.Count; i++)
+            for (int i = 1; i < actual.Elemek.Count; i++)
             {
-                if (Elemek[0].IntersectsWith(Elemek[i]))
+                if (actual.Elemek[0].IntersectsWith(actual.Elemek[i]))
                     return true;
             }
 
             //ellenséggel való ütközés => game over => egyből return:
-            if (ellenseg != null)
+            if (enemy != null)
             {
-                foreach (Rect r in ellenseg.Elemek)
+                foreach (Rect r in enemy.Elemek)
                 {
-                    if (Elemek[0].IntersectsWith(r))
+                    if (actual.Elemek[0].IntersectsWith(r))
                         return true;
                 }
             }
@@ -124,7 +127,7 @@ namespace Snake_beadando
             foreach (var c in map.Palya.Children)
             {
                 RectangleGeometry rg = (RectangleGeometry)c;
-                if (Elemek[0].IntersectsWith(rg.Rect))
+                if (actual.Elemek[0].IntersectsWith(rg.Rect))
                     return true;
             }
 
