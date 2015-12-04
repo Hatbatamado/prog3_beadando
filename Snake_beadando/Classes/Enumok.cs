@@ -13,4 +13,10 @@ namespace Snake_beadando
         balra,
         jobbra
     }
+
+    public enum Player
+    {
+        jatekos,
+        ellenseg
+    }
 }

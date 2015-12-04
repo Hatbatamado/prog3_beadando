@@ -16,7 +16,9 @@ namespace Snake_beadando
         Direction direct;
         int move = 15;
 
-        public Snake(int x, int y, int w, int h)
+        public Snake() { }
+
+        public Snake(int x, int y, int w, int h, Direction d, Player p)
         {
             this.x = x;
             this.y = y;
@@ -28,7 +30,7 @@ namespace Snake_beadando
                 Elemek.Add(new Rect(x, y, w, h));
                 y -= 15;
             }
-            Direct = Direction.le;
+            Direct = d;
         }
 
         public List<Rect> Elemek
@@ -41,6 +43,7 @@ namespace Snake_beadando
             set
             {
                 elemek = value;
+                OPC();
             }
         }
 
@@ -57,7 +60,7 @@ namespace Snake_beadando
             }
         }
 
-        public void Move(DispatcherTimer dt, Snake ellenseg, Map map)
+        public bool Move(DispatcherTimer dt, Snake jatekos, Snake ellenseg, Map map)
         {
             for (int i = elemek.Count - 1; i > 0; i--)
             {
@@ -88,14 +91,9 @@ namespace Snake_beadando
             if (Utkozik(ellenseg, map))
             {
                 dt.Stop();
-                JatekosInit();
+                return true;
             }
-        }
-
-        public void JatekosInit()
-        {
-            //vm.játékos
-            jatekos = new Snake(40, 100, 10, 10);
+            return false;
         }
 
         private bool Utkozik(Snake ellenseg, Map map)

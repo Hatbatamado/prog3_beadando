@@ -14,12 +14,15 @@ namespace Snake_beadando
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            List<Rect> elemek = (List<Rect>)value;
             GeometryGroup gg = new GeometryGroup();
-            foreach (Rect r in elemek)
+            List<Rect> elemek = (List<Rect>)value;
+            if (elemek != null && elemek.Count > 0)
             {
-                RectangleGeometry rg = new RectangleGeometry(r);
-                gg.Children.Add(rg);
+                foreach (Rect r in elemek)
+                {
+                    RectangleGeometry rg = new RectangleGeometry(r);
+                    gg.Children.Add(rg);
+                }
             }
             return gg;
         }

@@ -38,13 +38,17 @@ namespace Snake_beadando
 
         private void Dt_Tick(object sender, EventArgs e)
         {
-            vm.Jatekos.Move(dtJatekos, vm.Ellenseg, vm.Map);
+            if (vm.Jatekos.Move(dtJatekos, vm.Jatekos, vm.Ellenseg, vm.Map))
+            {
+                vm.GameOver(vm.Jatekos, Player.jatekos);
+            }
         }
 
         private void JatekosStart()
         {
             if (dtJatekos == null || !dtJatekos.IsEnabled)
             {
+                vm.JatekosInit();
                 vm.JatekosUzenet = "";
 
                 dtJatekos = new DispatcherTimer();

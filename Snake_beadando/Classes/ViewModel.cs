@@ -11,16 +11,34 @@ namespace Snake_beadando
         Snake jatekos;
         Snake ellenseg;
         Map map;
-        String jatekosUzenet;
-
+        string jatekosUzenet;
         //todo: VM statik lekérés ez alapján a kódok átírása
 
         public ViewModel(int cw, int ch)
         {
-            jatekos.JatekosInit();
+            jatekos = new Snake();
             Map = new Map(cw, ch);
-            Ellenseg = new Snake(0, 0, 10, 10);
+            Ellenseg = new Snake(0, 0, 10, 10, Direction.fel, Player.ellenseg);
             JatekosUzenet = "Kezdéshez nyomd meg: 'S'";
+        }
+
+        public void GameOver(Snake s, Player p)
+        {
+            if (p == Player.ellenseg)
+            {
+                Ellenseg = null;
+            }
+            else if (p == Player.jatekos)
+            {
+                Jatekos = null;
+                JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'S'";
+            }
+        }
+
+        public void JatekosInit()
+        {
+            jatekos = new Snake(40, 100, 10, 10, Direction.le, Player.jatekos);
+            OPC("Jatekos");
         }
 
         public Snake Jatekos
@@ -33,6 +51,7 @@ namespace Snake_beadando
             set
             {
                 jatekos = value;
+                OPC();
             }
         }
 
@@ -46,10 +65,11 @@ namespace Snake_beadando
             set
             {
                 map = value;
+                OPC();
             }
         }
 
-        internal Snake Ellenseg
+        public Snake Ellenseg
         {
             get
             {
@@ -59,6 +79,7 @@ namespace Snake_beadando
             set
             {
                 ellenseg = value;
+                OPC();
             }
         }
 
