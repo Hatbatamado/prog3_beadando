@@ -62,20 +62,24 @@ namespace Snake_beadando
         {
             switch (e.Key)
             {
-                case Key.S:
+                case Key.F:
                     JatekosStart();
                     break;
-                case Key.Up:
-                    vm.Jatekos.Direct = Direction.fel;
+                case Key.W:
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.le)
+                        vm.Jatekos.Direct = Direction.fel;
                     break;
-                case Key.Down:
-                    vm.Jatekos.Direct = Direction.le;
+                case Key.S:
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.fel)
+                        vm.Jatekos.Direct = Direction.le;
                     break;
-                case Key.Left:
-                    vm.Jatekos.Direct = Direction.balra;
+                case Key.A:
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.jobbra)
+                        vm.Jatekos.Direct = Direction.balra;
                     break;
-                case Key.Right:
-                    vm.Jatekos.Direct = Direction.jobbra;
+                case Key.D:
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.balra)
+                        vm.Jatekos.Direct = Direction.jobbra;
                     break;
             }
         }

@@ -16,10 +16,9 @@ namespace Snake_beadando
 
         public ViewModel(int cw, int ch)
         {
-            jatekos = new Snake();
             Map = new Map(cw, ch);
             Ellenseg = new Snake(0, 0, 10, 10, Direction.fel, Player.ellenseg);
-            JatekosUzenet = "Kezdéshez nyomd meg: 'S'";
+            JatekosUzenet = "Kezdéshez nyomd meg: 'F'";
         }
 
         public void GameOver(Snake s, Player p)
@@ -31,14 +30,13 @@ namespace Snake_beadando
             else if (p == Player.jatekos)
             {
                 Jatekos = null;
-                JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'S'";
+                JatekosUzenet = "Vesztettél!\nKezdéshez nyomd meg: 'F'";
             }
         }
 
         public void JatekosInit()
         {
-            jatekos = new Snake(40, 100, 10, 10, Direction.le, Player.jatekos);
-            OPC("Jatekos");
+            Jatekos = new Snake(40, 100, 10, 10, Direction.le, Player.jatekos);
         }
 
         public Snake Jatekos
