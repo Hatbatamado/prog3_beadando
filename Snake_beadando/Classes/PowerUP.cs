@@ -45,7 +45,7 @@ namespace Snake_beadando
 
         public override string ToString()
         {
-            return kar + " : " + tipus + "\n";
+            return kar + " : " + szoveg + "\n";
         }
     }
 }

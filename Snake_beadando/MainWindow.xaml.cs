@@ -90,7 +90,7 @@ namespace Snake_beadando
                 vm.JatekosUzenet = "";                
 
                 dtJatekos = new DispatcherTimer();
-                dtJatekos.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                dtJatekos.Interval = new TimeSpan(0, 0, 0, 0, 200);
                 dtJatekos.Tick += Dt_Tick;
                 dtJatekos.Start();
 
@@ -116,7 +116,7 @@ namespace Snake_beadando
                 vm.EllensegUzenet = "";
 
                 dtEllenseg = new DispatcherTimer();
-                dtEllenseg.Interval = new TimeSpan(0, 0, 0, 0, 300);
+                dtEllenseg.Interval = new TimeSpan(0, 0, 0, 0, 200);
                 dtEllenseg.Tick += DtEllenseg_Tick;
                 dtEllenseg.Start();
 
