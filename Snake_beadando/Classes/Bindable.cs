@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Snake_beadando
 {
+    //https://github.com/Hatbatamado/prog3_beadando
     abstract class Bindable : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

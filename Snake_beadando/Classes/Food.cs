@@ -9,6 +9,7 @@ using System.Windows.Media;
 
 namespace Snake_beadando
 {
+    //https://github.com/Hatbatamado/prog3_beadando
     class Food : Bindable
     {
         List<Rect> elemek;

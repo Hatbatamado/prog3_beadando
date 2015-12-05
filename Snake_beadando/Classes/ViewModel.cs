@@ -7,6 +7,7 @@ using System.Windows.Threading;
 
 namespace Snake_beadando
 {
+    //https://github.com/Hatbatamado/prog3_beadando
     class ViewModel : Bindable
     {
         Snake jatekos;

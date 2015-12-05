@@ -16,6 +16,8 @@ using System.Windows.Threading;
 
 namespace Snake_beadando
 {
+    //https://github.com/Hatbatamado/prog3_beadando
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

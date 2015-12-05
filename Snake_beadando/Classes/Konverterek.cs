@@ -10,6 +10,7 @@ using System.Windows.Media;
 
 namespace Snake_beadando
 {
+    //https://github.com/Hatbatamado/prog3_beadando
     class PlayerKonverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
