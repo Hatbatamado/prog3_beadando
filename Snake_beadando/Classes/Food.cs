@@ -17,6 +17,7 @@ namespace Snake_beadando
         public Food(Image img)
         {
             Elemek = new List<Rect>();
+            //játéktér méretinek beállítása ahol random megjelennek a kaják
             top = 60;
             left = 40;
             bottom = (int)img.ActualHeight - 10;
@@ -26,6 +27,7 @@ namespace Snake_beadando
         public void AddFood(Random R, Snake jatekos, Snake ellenseg)
         {
             Rect elem;
+            //kaja hely kiválasztása ha egy játékos van azon a helyen újjal próbálkozunk
             bool ujra = false;
             do
             {
@@ -44,6 +46,7 @@ namespace Snake_beadando
 
         private bool Utkozes(Snake elem, Rect mivel)
         {
+            //ütközik-e egy játkos az új kajával
             int i = 0;
             while (i < elem.Elemek.Count && !mivel.IntersectsWith(elem.Elemek[i]))
                 i++;

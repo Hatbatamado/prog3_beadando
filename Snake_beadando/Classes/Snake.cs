@@ -28,6 +28,7 @@ namespace Snake_beadando
             this.h = h;
             Elemek = new List<Rect>();
             PowerUp = new List<PowerUP>();
+            //alap 3 elem
             for (int i = 0; i < 3; i++)
             {
                 Elemek.Add(new Rect(x, y, w, h));
@@ -92,6 +93,7 @@ namespace Snake_beadando
 
         public Status Move(Snake actual, Snake enemy)
         {
+            //mozgatás
             for (int i = actual.elemek.Count - 1; i > 0; i--)
             {
                 actual.elemek[i] = actual.elemek[i - 1];
@@ -118,6 +120,7 @@ namespace Snake_beadando
             actual.Elemek[0] = elem;
             OPC("Elemek");
 
+            //ütközések vizsgálata
             Status statusz = Utkozik(actual, enemy);
 
             return statusz;
@@ -145,7 +148,7 @@ namespace Snake_beadando
             }
 
             //fallal való ütközés => game over => egyből return:
-            //fent és lent nem érzékeli az intersectet :(
+            //fent és lent nem érzékeli az intersectet PG-vel :(
             //PathGeometry pg = map.Palya.GetFlattenedPathGeometry();
             //PathGeometry rg = new RectangleGeometry(Elemek[0]).GetFlattenedPathGeometry();
             //if (Geometry.Combine(pg, rg, GeometryCombineMode.Intersect, null).GetArea() > 0)
@@ -171,10 +174,11 @@ namespace Snake_beadando
                 j++;
             if (j < kaja.Elemek.Count)
             {
-                kaja.Elemek.RemoveAt(j);
-                actual.Elemek.Add(actual.Elemek.Last<Rect>());
+                kaja.Elemek.RemoveAt(j); //kaja törlése
+                actual.Elemek.Add(actual.Elemek.Last<Rect>()); //snake elem növélese 1-el
                 if (kaja is Rocket)
                 {
+                    //ha rakéta power up-os volt a kaja, akkor adjuk hozzá a power upokhoz
                     vm.UpdateKaja(Status.rocket);
                     AddPowerUp(actual, Status.rocket, vm);
                     return Status.rocket;
@@ -190,8 +194,10 @@ namespace Snake_beadando
 
         private void AddPowerUp(Snake actual, Status tipus, ViewModel vm)
         {
+            //max 2 különböző power up lehet egy játékosnál
             if (actual.PowerUp.Count < 2)
             {
+                //van-e már ilyen power up-unk?
                 bool addable = true;
                 foreach(PowerUP p in actual.PowerUp)
                 {
@@ -200,6 +206,7 @@ namespace Snake_beadando
                 }
                 if (addable)
                 {
+                    //ha nincs, akkor vegyük fel
                     actual.PowerUp.Add(new PowerUP((actual == vm.Jatekos ? System.Windows.Input.Key.Space : System.Windows.Input.Key.RightCtrl), "Narancs rakéta", Status.rocket));
                     if (actual == vm.Jatekos)
                         vm.JatekosPowerUp = GetPowerUps(vm.Jatekos.PowerUp);
@@ -211,6 +218,7 @@ namespace Snake_beadando
 
         public void UseRocket(Snake actual, Snake enemy, ViewModel vm, DispatcherTimer dt1, DispatcherTimer dt2, DispatcherTimer dt3)
         {
+            //van-e rakétánk amit tudunk használni?
             bool haveRocket = false;
             int i = 0;
             while (i < actual.PowerUp.Count && actual.PowerUp[i].Tipus != Status.rocket)
@@ -220,6 +228,7 @@ namespace Snake_beadando
 
             if (haveRocket)
             {
+                //ha van akkor az ellenség 30%-át vonjuk le
                 List<Rect> tmp = new List<Rect>();
                 int db = (int)Math.Round(enemy.Elemek.Count * 0.3, 0);
                 if (db == 0)
@@ -227,10 +236,12 @@ namespace Snake_beadando
                 for (int j = 0; j < enemy.Elemek.Count-db; j++)
                     tmp.Add(enemy.Elemek[j]);
 
+                //ha minden elemét kilőttük az ellennek game over
                 if (tmp.Count == 0)
                      vm.GameOver(enemy, (actual == vm.Jatekos ? Player.ellenseg : Player.jatekos), dt1, dt2, dt3);
                 else
                 {
+                    //ha nem, akkor frissítünk
                     enemy.Elemek = tmp;
 
                     if (actual == vm.Jatekos)
@@ -243,6 +254,7 @@ namespace Snake_beadando
 
         private string RemovePowerUp(PowerUP p, List<PowerUP> plist)
         {
+            //power up törlése használat után és lista frissítése
             plist.Remove(p);
             return GetPowerUps(plist);
         }

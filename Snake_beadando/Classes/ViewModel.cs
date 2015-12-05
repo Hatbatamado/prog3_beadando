@@ -22,6 +22,8 @@ namespace Snake_beadando
         string leiras;
         string jatekosPowerUp;
         string ellensegPowerUp;
+        string jatekosIranyitas;
+        string ellensegIranyitas;
 
         public static ViewModel Get(int cw, int ch)
         {
@@ -38,10 +40,13 @@ namespace Snake_beadando
             Map = new Map(cw, ch);
             JatekosUzenet = "Kezdéshez nyomd meg: 'F'-t";
             EllensegUzenet = "Kezdéshez nyomd meg: 'Numpad 0'-t";
+            JatekosIranyitas = "Kék\nW: fel\nS: le\nA: balra\nD: jobbra";
+            EllensegIranyitas = "Piros\nFel nyíl\nLe nyíl\nBalra nyíl\nJobbra nyíl";
         }
 
         public void UpdateKaja(Status statusz)
         {
+            //frissítés
             switch (statusz)
             {
                 case Status.kaja:
@@ -55,6 +60,7 @@ namespace Snake_beadando
 
         public void GameOver(Snake s, Player p, DispatcherTimer dt1, DispatcherTimer dt2, DispatcherTimer dt3)
         {
+            //game over esetén minden timer leállítása és minden kaja, játékos törlése
             dt1.Stop();
             dt2.Stop();
             dt3.Stop();
@@ -225,6 +231,32 @@ namespace Snake_beadando
             {
                 ellensegPowerUp = value;
                 OPC();
+            }
+        }
+
+        public string JatekosIranyitas
+        {
+            get
+            {
+                return jatekosIranyitas;
+            }
+
+            set
+            {
+                jatekosIranyitas = value;
+            }
+        }
+
+        public string EllensegIranyitas
+        {
+            get
+            {
+                return ellensegIranyitas;
+            }
+
+            set
+            {
+                ellensegIranyitas = value;
             }
         }
     }

@@ -44,9 +44,10 @@ namespace Snake_beadando
 
         private void Dt_Tick(object sender, EventArgs e)
         {
+            //csak 1 tickenként lehet irányt váltani
             if (!vm.Jatekos.ChangeAble)
                 vm.Jatekos.ChangeAble = true;
-
+            //mozgatás, ütközések / game over vizsgálat
             Status statusz = vm.Jatekos.Move(vm.Jatekos, vm.Ellenseg);
             if (statusz == Status.gameover)
             {
@@ -56,6 +57,7 @@ namespace Snake_beadando
 
         private void KajaStart()
         {
+            //kaja hozzáadása a mapon belüli területre
             vm.Kaja = new Food(gridImg);
             vm.Rocket = new Rocket(gridImg);
             dtKaja = new DispatcherTimer();
@@ -66,6 +68,7 @@ namespace Snake_beadando
 
         private void DtKaja_Tick(object sender, EventArgs e)
         {
+            //random kaja hozzáadása, random időként, random fajtájú
             dtKaja.Stop();
             if (R.Next(1, 101) <= 20)
                 vm.Rocket.AddFood(R, vm.Jatekos, vm.Ellenseg);
@@ -77,6 +80,7 @@ namespace Snake_beadando
 
         private void JatekosStart()
         {
+            //csak akkor hozzuk létre a játékost, ha a másik is készen áll
             if (!jatekosReady)
                 jatekosReady = true;
 
@@ -102,6 +106,7 @@ namespace Snake_beadando
 
         private void EllensegStart()
         {
+            //csak akkor hozzuk létre a játékost, ha a másik is készen áll
             if (!ellensegReady)
                 ellensegReady = true;
 
@@ -125,9 +130,10 @@ namespace Snake_beadando
 
         private void DtEllenseg_Tick(object sender, EventArgs e)
         {
+            //csak 1 tickenként lehet irányt váltani
             if (!vm.Ellenseg.ChangeAble)
                 vm.Ellenseg.ChangeAble = true;
-
+            //mozgatás, ütközések / game over vizsgálat
             Status statusz = vm.Ellenseg.Move(vm.Ellenseg, vm.Jatekos);
             if (statusz == Status.gameover)
             {
@@ -137,6 +143,8 @@ namespace Snake_beadando
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            //gomb lenyomások közben timer vizsgálat, hogy megy-e a játék éppen
+            //changeable: csak 1 tickenként lehet irányt váltani
             switch (e.Key)
             {
                 case Key.F:
