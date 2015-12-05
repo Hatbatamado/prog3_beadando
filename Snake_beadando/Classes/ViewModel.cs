@@ -15,20 +15,28 @@ namespace Snake_beadando
         string ellensegUzenet;
         int cw;
         int ch;
-        
+        Food kaja;  
+
         public ViewModel(int cw, int ch)
         {
+            this.ch = ch;
+            this.cw = cw;
+
             Map = new Map(cw, ch);
             JatekosUzenet = "Kezdéshez nyomd meg: 'F'-t";
             EllensegUzenet = "Kezdéshez nyomd meg: 'Numpad 0'-t";
-            this.ch = ch;
-            this.cw = cw;
+        }
+
+        public void UpdateKaja()
+        {
+            OPC("Kaja");
         }
 
         public void GameOver(Snake s, Player p)
         {
             Ellenseg = null;
             Jatekos = null;
+            Kaja = null;
 
             if (p == Player.ellenseg)
             {
@@ -118,6 +126,20 @@ namespace Snake_beadando
             set
             {
                 ellensegUzenet = value;
+                OPC();
+            }
+        }
+
+        public Food Kaja
+        {
+            get
+            {
+                return kaja;
+            }
+
+            set
+            {
+                kaja = value;
                 OPC();
             }
         }

@@ -60,7 +60,7 @@ namespace Snake_beadando
             }
         }
 
-        public bool Move(DispatcherTimer dt1, DispatcherTimer dt2, Snake actual, Snake enemy, Map map)
+        public Status Move(DispatcherTimer dt1, DispatcherTimer dt2, DispatcherTimer dt3, Snake actual, Snake enemy, Map map, Food kaja)
         {
             for (int i = actual.elemek.Count - 1; i > 0; i--)
             {
@@ -88,24 +88,27 @@ namespace Snake_beadando
             actual.Elemek[0] = elem;
             OPC("Elemek");
 
-            if (Utkozik(actual, enemy, map))
+            Status statusz = Utkozik(actual, enemy, map, kaja);
+            if (statusz == Status.gameover)
             {
                 if (dt1 != null)
                     dt1.Stop();
                 if (dt2 != null)
                     dt2.Stop();
-                return true;
+                if (dt3 != null)
+                    dt3.Stop();
             }
-            return false;
+
+            return statusz;
         }
 
-        private bool Utkozik(Snake actual, Snake enemy, Map map)
+        private Status Utkozik(Snake actual, Snake enemy, Map map, Food kaja)
         {
             //önmagával való ütközés => game over => egyből return:
             for (int i = 1; i < actual.Elemek.Count; i++)
             {
                 if (actual.Elemek[0].IntersectsWith(actual.Elemek[i]))
-                    return true;
+                    return Status.gameover;
             }
 
             //ellenséggel való ütközés => game over => egyből return:
@@ -114,7 +117,7 @@ namespace Snake_beadando
                 foreach (Rect r in enemy.Elemek)
                 {
                     if (actual.Elemek[0].IntersectsWith(r))
-                        return true;
+                        return Status.gameover;
                 }
             }
 
@@ -128,11 +131,20 @@ namespace Snake_beadando
             {
                 RectangleGeometry rg = (RectangleGeometry)c;
                 if (actual.Elemek[0].IntersectsWith(rg.Rect))
-                    return true;
+                    return Status.gameover;
             }
 
-            //todo: kajával ütközés
-            return false;
+            //kajával ütközés
+            int j = 0;
+            while (j < kaja.Elemek.Count && !actual.Elemek[0].IntersectsWith(kaja.Elemek[j]))
+                j++;
+            if(j < kaja.Elemek.Count)
+            {
+                kaja.Elemek.RemoveAt(j);
+                actual.Elemek.Add(actual.Elemek.Last<Rect>());
+                return Status.kajaRM;
+            }
+            return Status.nothing;
         }
     }
 }

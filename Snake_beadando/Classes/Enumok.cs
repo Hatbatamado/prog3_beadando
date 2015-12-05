@@ -19,4 +19,11 @@ namespace Snake_beadando
         jatekos,
         ellenseg
     }
+
+    public enum Status
+    {
+        gameover,
+        kajaRM,
+        nothing
+    }
 }

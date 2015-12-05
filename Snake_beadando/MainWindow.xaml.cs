@@ -24,11 +24,14 @@ namespace Snake_beadando
         ViewModel vm;
         DispatcherTimer dtJatekos;
         DispatcherTimer dtEllenseg;
+        DispatcherTimer dtKaja;
         bool jatekosReady;
         bool ellensegReady;
+        static Random R;
 
         public MainWindow()
         {
+            R = new Random();
             InitializeComponent();
         }
 
@@ -36,15 +39,38 @@ namespace Snake_beadando
         {
             vm = new ViewModel((int)this.ActualWidth, (int)this.ActualHeight);
             
-            this.DataContext = vm;            
+            this.DataContext = vm;
         }
 
         private void Dt_Tick(object sender, EventArgs e)
         {
-            if (vm.Jatekos.Move(dtJatekos, dtEllenseg, vm.Jatekos, vm.Ellenseg, vm.Map))
+            Status statusz = vm.Jatekos.Move(dtJatekos, dtEllenseg, dtKaja, vm.Jatekos, vm.Ellenseg, vm.Map, vm.Kaja);
+            if (statusz == Status.gameover)
             {
                 vm.GameOver(vm.Jatekos, Player.jatekos);
             }
+            else if (statusz == Status.kajaRM)
+            {
+                vm.UpdateKaja();
+            }
+        }
+
+        private void KajaStart()
+        {
+            vm.Kaja = new Food(gridImg);
+            dtKaja = new DispatcherTimer();
+            dtKaja.Interval = new TimeSpan(0, 0, 0, 0, R.Next(1500, 3500));
+            dtKaja.Tick += DtKaja_Tick;
+            dtKaja.Start();
+        }
+
+        private void DtKaja_Tick(object sender, EventArgs e)
+        {
+            dtKaja.Stop();
+            vm.Kaja.AddFood(R, vm.Jatekos, vm.Ellenseg);
+            vm.UpdateKaja();
+            dtKaja.Interval = new TimeSpan(0, 0, 0, 0, R.Next(1500, 3500));
+            dtKaja.Start();
         }
 
         private void JatekosStart()
@@ -64,7 +90,9 @@ namespace Snake_beadando
 
                 if (dtEllenseg == null || !dtEllenseg.IsEnabled)
                     EllensegStart();
-                jatekosReady = false;                
+                jatekosReady = false;
+
+                KajaStart();
             }
             else
                 vm.JatekosUzenet = "Várakozás a másik játékosra";
@@ -95,9 +123,14 @@ namespace Snake_beadando
 
         private void DtEllenseg_Tick(object sender, EventArgs e)
         {
-            if (vm.Ellenseg.Move(dtEllenseg, dtJatekos, vm.Ellenseg, vm.Jatekos, vm.Map))
+            Status statusz = vm.Ellenseg.Move(dtEllenseg, dtJatekos, dtKaja, vm.Ellenseg, vm.Jatekos, vm.Map, vm.Kaja);
+            if (statusz == Status.gameover)
             {
                 vm.GameOver(vm.Ellenseg, Player.ellenseg);
+            }
+            else if (statusz == Status.kajaRM)
+            {
+                vm.UpdateKaja();
             }
         }
 
@@ -125,6 +158,7 @@ namespace Snake_beadando
                         vm.Jatekos.Direct = Direction.jobbra;
                     break;
                 case Key.NumPad0:
+                case Key.Enter:
                     EllensegStart();
                     break;
                 case Key.Up:

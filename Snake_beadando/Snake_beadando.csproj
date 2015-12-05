@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Classes\Bindable.cs" />
     <Compile Include="Classes\Enumok.cs" />
+    <Compile Include="Classes\Food.cs" />
     <Compile Include="Classes\Konverterek.cs" />
     <Compile Include="Classes\Map.cs" />
     <Compile Include="Classes\Snake.cs" />
