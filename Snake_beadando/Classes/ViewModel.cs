@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Snake_beadando
 {
@@ -15,28 +16,55 @@ namespace Snake_beadando
         string ellensegUzenet;
         int cw;
         int ch;
-        Food kaja;  
+        Food kaja;
+        Rocket rocket;
+        static ViewModel peldany;
+        string leiras;
+        string jatekosPowerUp;
+        string ellensegPowerUp;
 
-        public ViewModel(int cw, int ch)
+        public static ViewModel Get(int cw, int ch)
+        {
+            if (peldany == null)
+                peldany = new ViewModel(cw, ch);
+            return peldany;
+        }
+
+        private ViewModel(int cw, int ch)
         {
             this.ch = ch;
             this.cw = cw;
-
+            Leiras = "Narancs: az ellenfél elveszti a hosszának 30 % -át";
             Map = new Map(cw, ch);
             JatekosUzenet = "Kezdéshez nyomd meg: 'F'-t";
             EllensegUzenet = "Kezdéshez nyomd meg: 'Numpad 0'-t";
         }
 
-        public void UpdateKaja()
+        public void UpdateKaja(Status statusz)
         {
-            OPC("Kaja");
+            switch (statusz)
+            {
+                case Status.kaja:
+                    OPC("Kaja");
+                    break;
+                case Status.rocket:
+                    OPC("Rocket");
+                    break;
+            }
         }
 
-        public void GameOver(Snake s, Player p)
+        public void GameOver(Snake s, Player p, DispatcherTimer dt1, DispatcherTimer dt2, DispatcherTimer dt3)
         {
+            dt1.Stop();
+            dt2.Stop();
+            dt3.Stop();
+
             Ellenseg = null;
             Jatekos = null;
             Kaja = null;
+            Rocket = null;
+            JatekosPowerUp = "";
+            EllensegPowerUp = "";
 
             if (p == Player.ellenseg)
             {
@@ -140,6 +168,62 @@ namespace Snake_beadando
             set
             {
                 kaja = value;
+                OPC();
+            }
+        }
+
+        public Rocket Rocket
+        {
+            get
+            {
+                return rocket;
+            }
+
+            set
+            {
+                rocket = value;
+                OPC();
+            }
+        }
+
+        public string Leiras
+        {
+            get
+            {
+                return leiras;
+            }
+
+            set
+            {
+                leiras = value;
+                OPC();
+            }
+        }
+
+        public string JatekosPowerUp
+        {
+            get
+            {
+                return jatekosPowerUp;
+            }
+
+            set
+            {
+                jatekosPowerUp = value;
+                OPC();
+            }
+        }
+
+        public string EllensegPowerUp
+        {
+            get
+            {
+                return ellensegPowerUp;
+            }
+
+            set
+            {
+                ellensegPowerUp = value;
                 OPC();
             }
         }

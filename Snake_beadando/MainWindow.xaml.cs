@@ -37,27 +37,27 @@ namespace Snake_beadando
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            vm = new ViewModel((int)this.ActualWidth, (int)this.ActualHeight);
+            vm = ViewModel.Get((int)this.ActualWidth, (int)this.ActualHeight);
             
             this.DataContext = vm;
         }
 
         private void Dt_Tick(object sender, EventArgs e)
         {
-            Status statusz = vm.Jatekos.Move(dtJatekos, dtEllenseg, dtKaja, vm.Jatekos, vm.Ellenseg, vm.Map, vm.Kaja);
+            if (!vm.Jatekos.ChangeAble)
+                vm.Jatekos.ChangeAble = true;
+
+            Status statusz = vm.Jatekos.Move(vm.Jatekos, vm.Ellenseg);
             if (statusz == Status.gameover)
             {
-                vm.GameOver(vm.Jatekos, Player.jatekos);
-            }
-            else if (statusz == Status.kajaRM)
-            {
-                vm.UpdateKaja();
+                vm.GameOver(vm.Jatekos, Player.jatekos, dtJatekos, dtEllenseg, dtKaja);
             }
         }
 
         private void KajaStart()
         {
             vm.Kaja = new Food(gridImg);
+            vm.Rocket = new Rocket(gridImg);
             dtKaja = new DispatcherTimer();
             dtKaja.Interval = new TimeSpan(0, 0, 0, 0, R.Next(1500, 3500));
             dtKaja.Tick += DtKaja_Tick;
@@ -67,8 +67,10 @@ namespace Snake_beadando
         private void DtKaja_Tick(object sender, EventArgs e)
         {
             dtKaja.Stop();
-            vm.Kaja.AddFood(R, vm.Jatekos, vm.Ellenseg);
-            vm.UpdateKaja();
+            if (R.Next(1, 101) <= 20)
+                vm.Rocket.AddFood(R, vm.Jatekos, vm.Ellenseg);
+            else
+                vm.Kaja.AddFood(R, vm.Jatekos, vm.Ellenseg);
             dtKaja.Interval = new TimeSpan(0, 0, 0, 0, R.Next(1500, 3500));
             dtKaja.Start();
         }
@@ -94,7 +96,7 @@ namespace Snake_beadando
 
                 KajaStart();
             }
-            else
+            else if (dtJatekos == null || !dtJatekos.IsEnabled)
                 vm.JatekosUzenet = "Várakozás a másik játékosra";
         }
 
@@ -106,7 +108,7 @@ namespace Snake_beadando
             if (jatekosReady && (dtEllenseg == null || !dtEllenseg.IsEnabled))
             {
                 vm.EllensegInit();
-                vm.EllensegUzenet = "";                
+                vm.EllensegUzenet = "";
 
                 dtEllenseg = new DispatcherTimer();
                 dtEllenseg.Interval = new TimeSpan(0, 0, 0, 0, 300);
@@ -115,22 +117,21 @@ namespace Snake_beadando
 
                 if (dtJatekos == null || !dtJatekos.IsEnabled)
                     JatekosStart();
-                ellensegReady = false;                
+                ellensegReady = false;
             }
-            else
-                vm.EllensegUzenet= "Várakozás a másik játékosra";
+            else if (dtEllenseg == null || !dtEllenseg.IsEnabled)
+                vm.EllensegUzenet = "Várakozás a másik játékosra";
         }
 
         private void DtEllenseg_Tick(object sender, EventArgs e)
         {
-            Status statusz = vm.Ellenseg.Move(dtEllenseg, dtJatekos, dtKaja, vm.Ellenseg, vm.Jatekos, vm.Map, vm.Kaja);
+            if (!vm.Ellenseg.ChangeAble)
+                vm.Ellenseg.ChangeAble = true;
+
+            Status statusz = vm.Ellenseg.Move(vm.Ellenseg, vm.Jatekos);
             if (statusz == Status.gameover)
             {
-                vm.GameOver(vm.Ellenseg, Player.ellenseg);
-            }
-            else if (statusz == Status.kajaRM)
-            {
-                vm.UpdateKaja();
+                vm.GameOver(vm.Ellenseg, Player.ellenseg, dtJatekos, dtEllenseg, dtKaja);
             }
         }
 
@@ -142,40 +143,69 @@ namespace Snake_beadando
                     JatekosStart();
                     break;
                 case Key.W:
-                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.le)
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.ChangeAble && vm.Jatekos.Direct != Direction.le)
+                    {
                         vm.Jatekos.Direct = Direction.fel;
+                        vm.Jatekos.ChangeAble = false;
+                    }
                     break;
                 case Key.S:
-                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.fel)
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.ChangeAble && vm.Jatekos.Direct != Direction.fel)
+                    {
                         vm.Jatekos.Direct = Direction.le;
-                    break;
+                        vm.Jatekos.ChangeAble = false;
+                    }
+                        break;
                 case Key.A:
-                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.jobbra)
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.ChangeAble && vm.Jatekos.Direct != Direction.jobbra)
+                    {
                         vm.Jatekos.Direct = Direction.balra;
-                    break;
+                        vm.Jatekos.ChangeAble = false;
+                    }
+                        break;
                 case Key.D:
-                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.Direct != Direction.balra)
+                    if (dtJatekos != null && dtJatekos.IsEnabled && vm.Jatekos.ChangeAble && vm.Jatekos.Direct != Direction.balra)
+                    {
                         vm.Jatekos.Direct = Direction.jobbra;
+                        vm.Jatekos.ChangeAble = false;
+                    }
                     break;
                 case Key.NumPad0:
-                case Key.Enter:
                     EllensegStart();
                     break;
                 case Key.Up:
-                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.le)
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.ChangeAble && vm.Ellenseg.Direct != Direction.le)
+                    {
                         vm.Ellenseg.Direct = Direction.fel;
+                        vm.Ellenseg.ChangeAble = false;
+                    }
                     break;
                 case Key.Down:
-                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.fel)
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.ChangeAble && vm.Ellenseg.Direct != Direction.fel)
+                    {
                         vm.Ellenseg.Direct = Direction.le;
+                        vm.Ellenseg.ChangeAble = false;
+                    }
                     break;
                 case Key.Left:
-                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.jobbra)
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.ChangeAble && vm.Ellenseg.Direct != Direction.jobbra)
+                    {
                         vm.Ellenseg.Direct = Direction.balra;
+                        vm.Ellenseg.ChangeAble = false;
+                    }
                     break;
                 case Key.Right:
-                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.Direct != Direction.balra)
+                    if (dtEllenseg != null && dtEllenseg.IsEnabled && vm.Ellenseg.ChangeAble && vm.Ellenseg.Direct != Direction.balra)
+                    {
                         vm.Ellenseg.Direct = Direction.jobbra;
+                        vm.Ellenseg.ChangeAble = false;
+                    }
+                    break;
+                case Key.Space:
+                    vm.Jatekos.UseRocket(vm.Jatekos, vm.Ellenseg, vm, dtJatekos, dtEllenseg, dtKaja);
+                    break;
+                case Key.RightCtrl:
+                    vm.Ellenseg.UseRocket(vm.Ellenseg, vm.Jatekos, vm, dtJatekos, dtEllenseg, dtKaja);
                     break;
             }
         }

@@ -10,7 +10,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition />
-            <RowDefinition Height="172" />
+            <RowDefinition Height="86" />
+            <RowDefinition Height="86"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
@@ -20,6 +21,9 @@
         </Grid.ColumnDefinitions>
         <Label Content="{Binding JatekosUzenet}" Grid.Row="0" Grid.Column="1"/>
         <Label Content="{Binding EllensegUzenet}" Grid.Row="0" Grid.Column="2"/>
+        <Label Content="{Binding Leiras}" Grid.Column="1" Grid.Row="3" />
+        <Label Content="{Binding JatekosPowerUp}" Grid.Column="1" Grid.Row="2" />
+        <Label Content="{Binding EllensegPowerUp}" Grid.Column="2" Grid.Row="2" />
         <Image Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" x:Name="gridImg">
             <Image.Resources>
                 <local:PlayerKonverter x:Key="PlayerKonv"/>
@@ -32,6 +36,7 @@
                             <GeometryDrawing Geometry="{Binding Jatekos.Elemek, Converter={StaticResource PlayerKonv}}" Brush="Aqua" />
                             <GeometryDrawing Geometry="{Binding Map.Palya}" Brush="Black" />
                             <GeometryDrawing Geometry="{Binding Kaja.Elemek, Converter={StaticResource PlayerKonv}}" Brush="Black" />
+                            <GeometryDrawing Geometry="{Binding Rocket.Elemek, Converter={StaticResource PlayerKonv}}" Brush="Orange" />
                         </DrawingGroup>
                     </DrawingImage.Drawing>
                 </DrawingImage>

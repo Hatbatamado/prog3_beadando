@@ -16,7 +16,7 @@ namespace Snake_beadando
 
         public Food(Image img)
         {
-            elemek = new List<Rect>();
+            Elemek = new List<Rect>();
             top = 60;
             left = 40;
             bottom = (int)img.ActualHeight - 10;
@@ -37,10 +37,6 @@ namespace Snake_beadando
 
             if (elem != null)
             {
-                Brush tmp = Brushes.Black;
-                int szinek = R.Next(1, 101);
-                if (szinek < 50)
-                    tmp = Brushes.Yellow;
                 Elemek.Add(elem);
                 OPC("Elemek");
             }
@@ -70,5 +66,10 @@ namespace Snake_beadando
                 OPC();
             }
         }
+    }
+
+    class Rocket : Food
+    {
+        public Rocket(Image img) : base(img) { }
     }
 }

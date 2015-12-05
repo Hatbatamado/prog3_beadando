@@ -68,6 +68,7 @@
     <Compile Include="Classes\Food.cs" />
     <Compile Include="Classes\Konverterek.cs" />
     <Compile Include="Classes\Map.cs" />
+    <Compile Include="Classes\PowerUP.cs" />
     <Compile Include="Classes\Snake.cs" />
     <Compile Include="Classes\ViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">

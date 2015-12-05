@@ -23,7 +23,8 @@ namespace Snake_beadando
     public enum Status
     {
         gameover,
-        kajaRM,
-        nothing
+        kaja,
+        nothing,
+        rocket
     }
 }
